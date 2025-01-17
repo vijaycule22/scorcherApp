@@ -1,0 +1,82 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build output
+dist/
+build/
+tmp/
+temp/
+
+# Angular build files
+.angular/
+.angular-cache/
+coverage/
+.sass-cache/
+
+# Generated files
+*.class
+*.cache
+*.pid
+*.seed
+*.stackdump
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.orig
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm/
+
+# Compiled output
+*.out
+*.exe
+*.o
+*.pyc
+*.pyo
+
+# Testing
+jest/
+jest-test-results.json
+coverage/
+*.lcov
+.nyc_output/
+
+# Angular CLI files
+*.json.generated
+
+# Temporary files
+~$*
+
+# Service worker files
+ngsw-config.json
+ngsw.json
+
+# Others
+debug.log*
+yarn.lock
+package-lock.json
