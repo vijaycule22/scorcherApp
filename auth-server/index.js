@@ -134,19 +134,15 @@
 //   console.log('Server running on port 5000');
 // });
 
-const express = require("express");
-const dotenv = require("dotenv");
-dotenv.config({ path: "./.env" });
-const authRoutes = require("./routes/authRoutes");
-const userRoutes = require("./routes/userRoutes");
+import express from "express";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 app.use(express.json());
 
-// Use the routes
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
 
-app.listen(process.env.PORT || 4000, () => {
-  console.log("Server running on port 4000");
-});
+// Start server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

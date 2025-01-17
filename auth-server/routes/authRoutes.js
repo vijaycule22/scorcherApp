@@ -1,10 +1,10 @@
-const express = require('express');
+import express from "express";
+import { signup, login } from "../controllers/authController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
+
 const router = express.Router();
-const authController = require('../controllers/authController');
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
-router.post('/forgot-password', authController.forgotPassword);
-router.delete('/delete/:id', authController.deleteUser);
+router.post("/signup", signup);
+router.post("/login", login);
 
-module.exports = router;
+export default router;
