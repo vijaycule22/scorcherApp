@@ -1,19 +1,23 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { MenuItem } from "primeng/api";
+import { AuthService } from "../services/auth.service";
 
 @Component({
   selector: "app-navbar",
   standalone: false,
 
   templateUrl: "./navbar.component.html",
-  styleUrl: "./navbar.component.scss",
 })
 export class NavbarComponent {
   items: MenuItem[] | undefined;
-  constructor(private router: Router) {}
+  isUserLoggedIn = false;
+  constructor(private router: Router, public authService: AuthService) {}
 
   ngOnInit() {
+    let currentUser = this.authService.getCurrentUser();
+
+    console.log(currentUser);
     this.items = [
       {
         label: "Home",
@@ -65,6 +69,20 @@ export class NavbarComponent {
           this.router.navigate(["/signin"]); // Use this.router to navigate
         },
       },
+      {
+        label: "sign out",
+        icon: "pi pi-user",
+        visible: this.authService.isLoggedIn(),
+        command: () => {
+          this.onSignOut();
+        },
+      },
     ];
+  }
+
+  onSignOut() {
+    this.isUserLoggedIn = false;
+    localStorage.removeItem("token");
+    this.router.navigate(["/signin"]);
   }
 }

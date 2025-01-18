@@ -11,6 +11,7 @@ import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { MenubarModule } from "primeng/menubar";
+import { ToastModule } from "primeng/toast";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { providePrimeNG } from "primeng/config";
@@ -28,6 +29,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
+import { MessageService } from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import {
     BrowserAnimationsModule,
     ButtonModule,
     CheckboxModule,
+    ToastModule,
     InputTextModule,
     MenubarModule,
     FormsModule,
@@ -54,6 +57,7 @@ import {
     provideAnimationsAsync(),
     providePrimeNG({ theme: { preset: Aura } }),
     provideHttpClient(withInterceptorsFromDi()),
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

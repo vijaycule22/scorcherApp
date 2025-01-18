@@ -2,9 +2,13 @@ import dotenv from "dotenv";
 import express from "express";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import cors from "cors";
 // Load environment variables from the .env file
+
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 
 dotenv.config();
 

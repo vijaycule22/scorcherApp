@@ -1,3 +1,4 @@
 <div class="card absolute w-full">
     <p-menubar [model]="items" />
+    <label *ngIf="authService.isLoggedIn()">user logged in</label>
 </div>

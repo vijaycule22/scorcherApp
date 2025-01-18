@@ -2,11 +2,11 @@ import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-sign-in",
   templateUrl: "./sign-in.component.html",
-  styleUrls: ["./sign-in.component.scss"],
   standalone: false,
 })
 export class SignInComponent {
@@ -15,7 +15,8 @@ export class SignInComponent {
   constructor(
     public router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {
     this.signInForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
@@ -30,17 +31,28 @@ export class SignInComponent {
     if (this.signInForm.valid) {
       this.authService.signIn(this.signInForm.value).subscribe({
         next: (response) => {
-          console.log("Sign-In Successful", response);
+          this.messageService.add({
+            severity: "success",
+            summary: "success",
+            detail: response.message,
+            life: 3000,
+          });
+
           // Store token, redirect, etc.
           localStorage.setItem("token", response.token);
+
+          this.router.navigate(["/"]);
         },
         error: (error) => {
-          console.error("Sign-In Failed", error);
-          // Display error to the user
+          this.messageService.add({
+            severity: "warn",
+            summary: "warn",
+            detail: error.error.message,
+            life: 3000,
+          });
         },
       });
     } else {
-      console.log("Form Invalid");
       this.signInForm.markAllAsTouched();
     }
   }
