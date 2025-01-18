@@ -14,4 +14,26 @@ export default {
     );
     return result.rows[0];
   },
+
+  getUserById: async (id) => {
+    const result = await client.query("SELECT * FROM users WHERE id = $1", [
+      id,
+    ]);
+    return result.rows[0];
+  },
+  getAllUsers: async () => {
+    const result = await client.query("SELECT * FROM users");
+    return result.rows;
+  },
+  updateUser: async (id, name) => {
+    const result = await client.query(
+      "UPDATE users SET name = $2 WHERE id = $1",
+      [id, name]
+    );
+    return result.rows[0];
+  },
+  deleteUser: async (id) => {
+    const result = await client.query("DELETE FROM users WHERE id = $1", [id]);
+    return result.rows[0];
+  },
 };
