@@ -27,12 +27,14 @@ import { SignupComponent } from "./signup/signup.component";
 import { HomeComponent } from "./home/home.component";
 import { FooterComponent } from "./footer/footer.component";
 import {
+  HTTP_INTERCEPTORS,
   HttpClient,
   HttpClientModule,
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
 import { MessageService } from "primeng/api";
+import { AuthInterceptor } from "./interceptors/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -64,6 +66,11 @@ import { MessageService } from "primeng/api";
     providePrimeNG({ theme: { preset: Aura } }),
     provideHttpClient(withInterceptorsFromDi()),
     MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
