@@ -12,6 +12,9 @@ import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { MenubarModule } from "primeng/menubar";
 import { ToastModule } from "primeng/toast";
+import { AvatarModule } from "primeng/avatar";
+import { AvatarGroupModule } from "primeng/avatargroup";
+import { MenuModule } from "primeng/menu";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { providePrimeNG } from "primeng/config";
@@ -51,6 +54,9 @@ import { MessageService } from "primeng/api";
     MenubarModule,
     FormsModule,
     ReactiveFormsModule,
+    AvatarModule,
+    AvatarGroupModule,
+    MenuModule,
   ],
   providers: [
     provideClientHydration(),
