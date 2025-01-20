@@ -42,7 +42,7 @@ export class SignInComponent {
           localStorage.setItem("token", response.token);
           this.authService.isLoggedIn(true);
 
-          this.router.navigate(["/"]);
+          this.router.navigate(["/teams"]);
         },
         error: (error) => {
           this.messageService.add({

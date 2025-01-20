@@ -15,6 +15,19 @@ import { ToastModule } from "primeng/toast";
 import { AvatarModule } from "primeng/avatar";
 import { AvatarGroupModule } from "primeng/avatargroup";
 import { MenuModule } from "primeng/menu";
+import { ListboxModule } from "primeng/listbox";
+import { TreeModule } from "primeng/tree";
+import {
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  DragDropModule,
+} from "@angular/cdk/drag-drop";
+import { TableModule } from "primeng/table";
+import { DialogModule } from "primeng/dialog";
+import { SelectModule } from "primeng/select";
+import { BadgeModule } from "primeng/badge";
+import { OverlayBadgeModule } from "primeng/overlaybadge";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { providePrimeNG } from "primeng/config";
@@ -33,8 +46,11 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
-import { MessageService } from "primeng/api";
+import { MessageService, TreeDragDropService } from "primeng/api";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
+import { TeamsPageComponent } from "./teams-page/teams-page.component";
+import { PlayersPageComponent } from "./players-page/players-page.component";
+import { IndianCurrencyRupeePipe } from "./pipes/indian-currency-rupee.pipe";
 
 @NgModule({
   declarations: [
@@ -44,6 +60,10 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
     SignupComponent,
     HomeComponent,
     FooterComponent,
+    TeamsPageComponent,
+    PlayersPageComponent,
+    IndianCurrencyRupeePipe,
+    // IndianCurrencyPipe,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +79,17 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
     AvatarModule,
     AvatarGroupModule,
     MenuModule,
+    ListboxModule,
+    TreeModule,
+    DragDropModule,
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,
+    TableModule,
+    DialogModule,
+    SelectModule,
+    BadgeModule,
+    OverlayBadgeModule,
   ],
   providers: [
     provideClientHydration(),
@@ -71,6 +102,7 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
       useClass: AuthInterceptor,
       multi: true,
     },
+    TreeDragDropService,
   ],
   bootstrap: [AppComponent],
 })

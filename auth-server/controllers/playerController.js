@@ -6,7 +6,12 @@ export default {
       const player = await Player.createPlayer(req.body);
       res.status(201).json(player);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      // Handle validation errors or other specific exceptions
+      if (error.name === "ValidationError") {
+        res.status(400).json({ error: error.errors[0].message });
+      } else {
+        res.status(500).json({ error: error.message });
+      }
     }
   },
 
@@ -34,7 +39,12 @@ export default {
       const updatedPlayer = await Player.updatePlayer(req.params.id, req.body);
       res.json(updatedPlayer);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      // Handle validation errors or other specific exceptions
+      if (error.name === "ValidationError") {
+        res.status(400).json({ error: error.errors[0].message });
+      } else {
+        res.status(500).json({ error: error.message });
+      }
     }
   },
 
@@ -42,6 +52,50 @@ export default {
     try {
       const success = await Player.deletePlayer(req.params.id);
       res.json({ success });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getPlayerByTeamId: async (req, res) => {
+    try {
+      console.log(req.params);
+      const players = await Player.getPlayerByTeamId(req.params.teamId);
+      res.json(players);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  // Additional functionalities (optional)
+
+  setCaptain: async (req, res) => {
+    try {
+      const playerId = req.params.playerId;
+      const updatedPlayer = await Player.setCaptain(playerId);
+      if (!updatedPlayer) {
+        return res
+          .status(400)
+          .json({ error: "Player not found or cannot be set as captain" });
+      }
+      res.json(updatedPlayer);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  updatePlayingStatus: async (req, res) => {
+    try {
+      const playerId = req.params.playerId;
+      const { isPlaying11 } = req.body;
+      const updatedPlayer = await Player.updatePlayingStatus(
+        playerId,
+        isPlaying11
+      );
+      if (!updatedPlayer) {
+        return res.status(400).json({ error: "Player not found" });
+      }
+      res.json(updatedPlayer);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
