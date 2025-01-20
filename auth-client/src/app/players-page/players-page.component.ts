@@ -12,13 +12,6 @@ interface Country {
   code: string;
 }
 
-// status.enum.ts
-export enum Status {
-  Active = 0,
-  Inactive = 1,
-  Suspended = 2,
-}
-
 @Component({
   selector: "app-players-page",
   standalone: false,

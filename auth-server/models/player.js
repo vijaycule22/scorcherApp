@@ -124,7 +124,6 @@ export default {
       "SELECT p.id, p.name, p.role_id, p.age, p.is_captain, p.player_rating, p.is_playing11, p.playing11_position, p.price, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id WHERE p.team_id = $1",
       [teamId]
     );
-    console.log(result.rows);
     return result.rows;
   },
 
