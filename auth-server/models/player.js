@@ -1,4 +1,4 @@
-import client from "../config/db.js";
+import pool from "../config/db.js"; // Using pool for connection
 
 export default {
   createPlayer: async ({
@@ -11,7 +11,10 @@ export default {
     isPlaying11 = true,
     playing11Position,
   }) => {
+    const client = await pool.connect(); // Get client from pool
     try {
+      await client.query("BEGIN"); // Start the transaction
+
       // Fetch the role_id from player_roles table using the roleName
       const roleResult = await client.query(
         "SELECT id FROM player_roles WHERE role_name = $1",
@@ -39,25 +42,14 @@ export default {
         ]
       );
 
-      return playerResult.rows[0];
+      await client.query("COMMIT"); // Commit the transaction
+      return playerResult.rows[0]; // Return the created player
     } catch (error) {
-      throw error;
+      await client.query("ROLLBACK"); // Rollback on error
+      throw error; // Propagate the error
+    } finally {
+      client.release(); // Release the client back to the pool
     }
-  },
-
-  getAllPlayers: async () => {
-    const result = await client.query(
-      "SELECT p.id, p.name, p.role, p.age, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id"
-    );
-    return result.rows;
-  },
-
-  getPlayerById: async (id) => {
-    const result = await client.query(
-      "SELECT p.id, p.name, p.role, p.age, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id WHERE p.id = $1",
-      [id]
-    );
-    return result.rows[0];
   },
 
   updatePlayer: async (
@@ -73,7 +65,10 @@ export default {
       playing11Position,
     }
   ) => {
+    const client = await pool.connect(); // Get client from pool
     try {
+      await client.query("BEGIN"); // Start the transaction
+
       // Fetch the role_id from player_roles table
       const roleResult = await client.query(
         "SELECT id FROM player_roles WHERE role_name = $1",
@@ -106,37 +101,74 @@ export default {
         throw new Error("Player not found.");
       }
 
-      return playerResult.rows[0];
+      await client.query("COMMIT"); // Commit the transaction
+      return playerResult.rows[0]; // Return the updated player
     } catch (error) {
-      throw error;
+      await client.query("ROLLBACK"); // Rollback on error
+      throw error; // Propagate the error
+    } finally {
+      client.release(); // Release the client back to the pool
+    }
+  },
+
+  setCaptain: async (playerId) => {
+    const client = await pool.connect(); // Get client from pool
+    try {
+      await client.query("BEGIN"); // Start the transaction
+
+      // Update the player as captain (ensure only one captain)
+      const result = await client.query(
+        "UPDATE players SET is_captain = TRUE WHERE id = $1 AND id IN (SELECT player_id FROM player_roles WHERE role_name = 'Captain')",
+        [playerId]
+      );
+
+      if (result.rowCount === 0) {
+        throw new Error("Player cannot be set as captain.");
+      } else if (result.rowCount > 1) {
+        throw new Error("Multiple captains found.");
+      }
+
+      await client.query("COMMIT"); // Commit the transaction
+    } catch (error) {
+      await client.query("ROLLBACK"); // Rollback on error
+      throw error; // Propagate the error
+    } finally {
+      client.release(); // Release the client back to the pool
     }
   },
 
   deletePlayer: async (id) => {
+    const client = await pool.connect();
     const result = await client.query("DELETE FROM players WHERE id = $1", [
       id,
     ]);
     return result.rowCount > 0;
   },
 
-  getPlayerByTeamId: async (teamId) => {
+  getAllPlayers: async () => {
+    const client = await pool.connect();
     const result = await client.query(
-      "SELECT p.id, p.name, p.role_id, p.age, p.is_captain, p.player_rating, p.is_playing11, p.playing11_position, p.price, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id WHERE p.team_id = $1",
-      [teamId]
+      "SELECT p.id, p.name, p.role, p.age, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id"
     );
     return result.rows;
   },
 
-  setCaptain: async (playerId) => {
+  getPlayerById: async (id) => {
+    const client = await pool.connect();
     const result = await client.query(
-      "UPDATE players SET is_captain = TRUE WHERE id = $1 AND id IN (SELECT player_id FROM player_roles WHERE role_name = 'Captain')",
-      [playerId]
+      "SELECT p.id, p.name, p.role, p.age, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id WHERE p.id = $1",
+      [id]
     );
+    return result.rows[0];
+  },
 
-    if (result.rowCount === 0) {
-      throw new Error("Player cannot be set as captain.");
-    } else if (result.rowCount > 1) {
-      throw new Error("Multiple captains found.");
-    }
+  getPlayerByTeamId: async (teamId) => {
+    const client = await pool.connect();
+    const result = await client.query(
+      "SELECT p.id, p.name, p.role_id, p.age, p.is_captain, p.player_rating, p.is_playing11, p.playing11_position, p.price, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id WHERE p.team_id = $1",
+      [teamId]
+    );
+    console.log(result.rows);
+    return result.rows;
   },
 };

@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { MessageService } from "primeng/api";
 
-@Component({
+@Component({ 
   selector: "app-sign-in",
   templateUrl: "./sign-in.component.html",
   standalone: false,

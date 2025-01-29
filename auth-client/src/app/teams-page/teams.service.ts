@@ -19,4 +19,12 @@ export class TeamsService {
   getPlayersByTeam(teamId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/teams/${teamId}/players`);
   }
+
+  getPlaying11ByUser(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user-player-positions/${userId}`);
+  }
+
+  savePlaying11(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/user-player-positions/bulk`, data);
+  }
 }

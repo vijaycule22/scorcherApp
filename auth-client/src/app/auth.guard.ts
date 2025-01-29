@@ -9,12 +9,15 @@ import { MessageService } from 'primeng/api';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService) { }
 
 
   canActivate(): boolean {
     this.authService.isAdmin();
-    if (this.authService.isLoggedIn()) { 
+    if (this.authService.isLoggedIn()) {
       return true;
     } else {
       this.messageService.add({

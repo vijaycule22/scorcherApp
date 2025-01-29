@@ -71,4 +71,20 @@ export class AuthService {
   getCurrentUser(decodedToken: any): Observable<any> {
     return this.http.get(`${this.apiUrl}users/${decodedToken.id}`, {});
   }
+
+  getCurrentUserData(): any {
+    let token = "";
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("token")) {
+        token = localStorage.getItem("token") || "";
+      }
+    }
+
+    if (!token) {
+      return null;
+    }
+
+    let decodedToken = jwtDecode(token);
+    return decodedToken;
+  }
 }

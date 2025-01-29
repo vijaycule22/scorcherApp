@@ -38,5 +38,5 @@
     </div>
 
 
-    <app-players-page [players]="players" [playing11]="playing11" [isAdmin]="isAdmin"></app-players-page>
+    <app-players-page [players]="nonPlaying11" [teamId]="this.teamId" [userId]="currentUser.id" [playing11]="playing11" [isAdmin]="isAdmin"></app-players-page>
 </div>
