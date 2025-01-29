@@ -30,7 +30,7 @@ export class AuthService {
     this.router.navigate(["/login"]);
   }
 
-  isLoggedIn(data: any): boolean {
+  isLoggedIn(): boolean {
     let jwtHelper = new JwtHelperService();
     let token = "";
     if (typeof window !== "undefined") {
@@ -47,6 +47,25 @@ export class AuthService {
     let isExpired = jwtHelper.isTokenExpired(token);
     this.dataSource.next(!isExpired);
     return !isExpired;
+  }
+
+  isAdmin(): boolean {
+    let token = "";
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("token")) {
+        token = localStorage.getItem("token") || "";
+      }
+    }
+
+    if (!token) {
+      return false;
+    }
+
+    let decodedToken = jwtDecode(token);
+
+    let data = decodedToken as any
+    
+     return data?.role === 1;
   }
 
   getCurrentUser(decodedToken: any): Observable<any> {

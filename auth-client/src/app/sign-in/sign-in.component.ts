@@ -40,7 +40,7 @@ export class SignInComponent {
 
           // Store token, redirect, etc.
           localStorage.setItem("token", response.token);
-          this.authService.isLoggedIn(true);
+          this.authService.isLoggedIn();
 
           this.router.navigate(["/teams"]);
         },

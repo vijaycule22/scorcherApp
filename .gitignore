@@ -21,6 +21,7 @@ temp/
 .angular-cache/
 coverage/
 .sass-cache/
+auth-client/cache
 
 # Generated files
 *.class

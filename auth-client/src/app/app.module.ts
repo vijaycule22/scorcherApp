@@ -41,8 +41,6 @@ import { HomeComponent } from "./home/home.component";
 import { FooterComponent } from "./footer/footer.component";
 import {
   HTTP_INTERCEPTORS,
-  HttpClient,
-  HttpClientModule,
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
